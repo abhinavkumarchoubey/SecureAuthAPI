@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,7 +18,7 @@ public class User {
     private Long Id;
 
     @Column(unique = true, nullable = false, name = "user_name")
-    private String userName;
+    private String username;
 
     @Column(length = 100)
     private String name;
@@ -42,7 +43,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role;
+    private List<UserRole> role;
 
     public enum UserRole{
         ADMIN, USER
