@@ -4,6 +4,8 @@ import com.securauth.securauthapi.entity.User;
 import com.securauth.securauthapi.repository.UserRepository;
 import com.securauth.securauthapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,6 +15,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -26,8 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
-        user.setRole(List.of(User.UserRole.USER));
+        user.setRole(User.UserRole.USER);
         return userRepository.save(user);
     }
 }

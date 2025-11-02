@@ -43,7 +43,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private List<UserRole> role;
+    private UserRole role;
 
     public enum UserRole{
         ADMIN, USER
