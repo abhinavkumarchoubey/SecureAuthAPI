@@ -8,4 +8,6 @@ public interface UserService {
     List<User> getAllUsers();
 
     User createUser(User user);
+
+    User findByUsername(String name);
 }

@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,11 +25,13 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository=userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/signin")
@@ -57,9 +60,9 @@ public class AuthController {
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setPhone(signUpRequest.getPhone());
-        user.setPassword(signUpRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
-        user.setRole(User.UserRole.USER);
+        user.setRole(User.UserRole.ROLE_USER);
 
         userRepository.save(user);
 

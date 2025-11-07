@@ -32,7 +32,12 @@ public class UserServiceImpl implements UserService {
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
-        user.setRole(User.UserRole.USER);
+        user.setRole(User.UserRole.ROLE_USER);
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findByUsername(String name) {
+        return userRepository.findByUsername(name);
     }
 }

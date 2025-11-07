@@ -4,6 +4,8 @@ import com.securauth.securauthapi.entity.User;
 import com.securauth.securauthapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +38,13 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user){
         return ResponseEntity.ok(userService.createUser(user));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> findUserByUsername(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String name=authentication.getName();
+        return ResponseEntity.ok(userService.findByUsername(name));
     }
 
 }
