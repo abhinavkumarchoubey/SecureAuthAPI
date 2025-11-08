@@ -12,6 +12,14 @@ target/
 .settings
 .springBeans
 .sts4-cache
+.yml
+
+# Environment files
+.env
+application.properties
+application.yml
+application-dev.properties
+application-prod.properties
 
 ### IntelliJ IDEA ###
 .idea
@@ -31,3 +39,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# OS-specific
+.DS_Store
+Thumbs.db
