@@ -22,16 +22,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-
-        System.out.println(">>> DB Role = " + user.getRole().toString());
-
-        if(user!=null){
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getUsername())
-                    .password(user.getPassword())
-                    .authorities(user.getRole().toString())
-                    .build();
+        if(user == null){
+                 throw new UsernameNotFoundException("User not found with username, email or phone: " +username);
         }
-        throw new UsernameNotFoundException("User not found with username: "+username);
+
+        return UserPrincipal.create(user);
+    }
+
+    public UserDetails loadUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found with id: "+userId));
+        return UserPrincipal.create(user);
     }
 }

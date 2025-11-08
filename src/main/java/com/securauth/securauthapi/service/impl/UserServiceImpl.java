@@ -40,4 +40,16 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String name) {
         return userRepository.findByUsername(name);
     }
+
+    @Override
+    public User updateUser(User user, String name) {
+        User userAfterUpdate = userRepository.findByUsername(name);
+        userAfterUpdate.setName(user.getName());
+        userAfterUpdate.setUsername(user.getUsername());
+        userAfterUpdate.setEmail(user.getEmail());
+        userAfterUpdate.setPhone(user.getPhone());
+        userAfterUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+        userAfterUpdate.setUpdatedAt(LocalDateTime.now());
+        return userRepository.save(userAfterUpdate);
+    }
 }
